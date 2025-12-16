@@ -1,0 +1,79 @@
+pensar em um nome bom para o acervo
+
+uma pagina de login simples que tenha uma logo (uma logo fictícia)
+(com sing in and sing up)
+
+--- dividir esses botões, alguns para perfil de admin ---
+para user normal as opções tem que ser diferentes
+
+mostrar livros cadastrados em formato de imagem não por uma simples lista
+
+____
+____
+____
+
+isso é uma representação de um botão "menu" para ter as seguintes opções:
+
+Cadastro de livros
+Consultar o estoque -> em formato de tabela
+Emprestimos
+    |__ geral
+    |__ meus emprestimo
+Usuários bloqueados
+    
+Sair -> que seria "sair da conta" no caso
+
+model ->
+    título
+    autor
+    ano de publicação
+    número de páginas
+    genêro
+    Classificação
+    Quantidade
+    Sinopse
+    
+    ---- no front ---- 
+    adicionar capa -> botão ai você precisa carregar uma imagem local para usar 
+
+--- no front ---
+ao clicar exibir o model e sua imagem se tiver (tem que ter)
+e também falando se está disponível
+
+botão de fazer um emprestimo
+
+--- parte do emprestimo ---
+confirmar dados -> mostrar todos os dados aplicaveis do model User 
+botão de confirmar 
+botão de cancelar 
+
+o emprestimo vai funcionar por dias
+por exemplo:
+    o user lucas@sim.com fez um emprestimo no dia 12/03/2025 e precisa devolver no dia 12/04/2025 (avisar que o valor do empretimo varia de 
+    28 a 30 dias), quando o user for devolver o back-end pega o dia atual e compara com o primeiro dia do emprestimo
+
+    se estiver no prazo da OK
+    se não haverá uma punição:
+        a cada dia que o user atrasou ele fica suspenso do site 💀 (for real kkkkkkkkkkkkk)
+        ai vai precisar ter um if pra ver se o user está suspenso e a comparação de datas tipo:
+            dia_sair_punicao = "2"
+            mes_sair_punicao = "03"
+            ano = "2025" # se precisar
+
+            if dia_atual == dia_sair_punicao && mes_atual == mes_sair_punicao && ano_atual == ano {
+                ai libera o site
+            } else {
+                avisa que está bloqueado e fala a data que desbloqueia
+            }
+
+            na hora do code eu crio funções para organizar e não usar o "else" kkkk
+
+Feature interessante:
+    já que o user colocou a idade dele
+    se um livro for para 16 anos e o user tiver 12
+    não é possivel fazer um emprestimo
+
+
+Feature futura:
+Mas a biblioteca permitiria comprar o livro, adiciona-lo em sua estante pessoal e poder ler
+de forma online ou baixar o PDF do livro para ler offline.
