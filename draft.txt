@@ -1,10 +1,10 @@
-pensar em um nome bom para o acervo
+o sistema é pensado para um funcionário gerir!
 
+pensar em um nome bom para o "sistema de gestão de uma biblioteca"
+
+--- apenas para admin ---
 uma pagina de login simples que tenha uma logo (uma logo fictícia)
 (com sing in and sing up)
-
---- dividir esses botões, alguns para perfil de admin ---
-para user normal as opções tem que ser diferentes
 
 mostrar livros cadastrados em formato de imagem não por uma simples lista
 
@@ -17,10 +17,8 @@ isso é uma representação de um botão "menu" para ter as seguintes opções:
 Cadastro de livros
 Consultar o estoque -> em formato de tabela
 Emprestimos
-    |__ geral
-    |__ meus emprestimo
-Usuários bloqueados
-    
+Usuários bloqueados (o usuario é bloqueado quando passar 30 dias sem devolução)
+Usuários com multas
 Sair -> que seria "sair da conta" no caso
 
 model ->
@@ -42,12 +40,14 @@ e também falando se está disponível
 
 botão de fazer um emprestimo
 
+para concluir o emprestimo ai precisar dos dados do cliente (busca por CPF no DB) 
+
 --- parte do emprestimo ---
 confirmar dados -> mostrar todos os dados aplicaveis do model User 
 botão de confirmar 
 botão de cancelar 
 
-o emprestimo vai funcionar por dias
+o emprestimo vai funcionar por dias e multa
 por exemplo:
     o user lucas@sim.com fez um emprestimo no dia 12/03/2025 e precisa devolver no dia 12/04/2025 (avisar que o valor do empretimo varia de 
     28 a 30 dias), quando o user for devolver o back-end pega o dia atual e compara com o primeiro dia do emprestimo
@@ -67,6 +67,9 @@ por exemplo:
             }
 
             na hora do code eu crio funções para organizar e não usar o "else" kkkk
+
+podendo configurar a multa dependendo do livro 
+ou seja: livro X custa R$100,00 a multa vai ser de 30% do valor resultando em 30R$ por dia
 
 Feature interessante:
     já que o user colocou a idade dele
