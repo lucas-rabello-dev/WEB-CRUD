@@ -1,3 +1,221 @@
 body {
-    background-color: #03223f;
+    /* antigo: background-color: #03223f; */
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: #0b1220;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(64, 132, 255, 0.12), transparent 8%),
+                radial-gradient(900px 500px at 90% 90%, rgba(59, 130, 246, 0.08), transparent 8%),
+                linear-gradient(180deg, #021428 0%, #03223f 60%);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* layout container */
+.container {
+    max-width: 1100px;
+    margin: 2.25rem auto;
+    padding: 1rem;
+}
+
+/* topbar */
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:120;
+    width:100%;
+    padding: 0.6rem 0;
+    backdrop-filter: blur(6px);
+}
+.topbar-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    color: #fff;
+    padding: 0 1rem;
+    max-width:1100px;
+    margin:0 auto; /* centraliza a topbar com o container principal */
+}
+
+/* hamburger */
+.hamburger{
+    display:inline-flex;align-items:center;justify-content:center;width:44px;height:36px;background:rgba(255,255,255,0.06);border:0;cursor:pointer;border-radius:8px;color:#fff;
+}
+.hamburger-box{display:inline-block;width:22px;height:14px;position:relative}
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after{
+    display:block;background:#fff;height:2px;border-radius:2px;position:absolute;width:100%;left:0;
+}
+.hamburger-inner{top:50%;transform:translateY(-50%)}
+.hamburger-inner::before{content:"";top:-6px}
+.hamburger-inner::after{content:"";top:6px}
+
+/* menu */
+.menu-wrap{
+    position:relative; /* garante que o menu absoluto seja posicionado perto do botão */
+}
+.site-menu{
+    z-index:300; /* menu acima do overlay */
+    right:0;
+    top:calc(100% + 8px); /* sempre abaixo do botão */
+    position:absolute;
+    min-width:240px;
+    max-width:calc(100vw - 32px);
+    background:#fff;
+    color:#0b1220;
+    border-radius:10px;
+    box-shadow:0 10px 40px rgba(2,6,23,0.18);
+    display:flex;
+    flex-direction:column;
+    gap:0.25rem;
+    padding:0.5rem;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform-origin:top right;
+    transform: translateY(-6px) scale(.98);
+    transition: opacity .14s ease, transform .14s cubic-bezier(.2,.9,.3,1), visibility .14s;
+    max-height: calc(100vh - 140px); /* evita que o menu "ultrapasse" a viewport */
+    overflow:auto;
+}
+.site-menu a {
+    padding:0.65rem 0.9rem;
+    text-decoration:none;
+    color:inherit;
+    border-radius:8px;
+    font-weight:600;
+    outline: none;
+}
+.site-menu a:focus {
+    outline: 2px solid rgba(79,70,229,0.18);
+    outline-offset:2px;
+    background: #eef2ff;
+    color: #0b1220;
+}
+.site-menu[aria-hidden="false"]{ opacity:1; visibility:visible; pointer-events:auto; transform: translateY(0) scale(1); }
+
+/* Ajustes para telas pequenas: menu mais bem posicionado */
+@media (max-width:640px){
+    .site-menu{ right:12px; left:auto; min-width:200px; top:52px }
+}
+
+/* hero */
+.hero {
+    margin-top: 1.5rem;
+    display:flex;
+    gap:2rem;
+    align-items:center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 12px 40px rgba(2,6,23,0.24);
+    backdrop-filter: blur(8px);
+}
+.hero-left {
+    flex: 1 1 55%;
+    color: #eaf2ff;
+}
+.hero-title {
+    margin:0;
+    font-size: 2.1rem;
+    line-height: 1.02;
+    color: #fff;
+    text-shadow: 0 6px 24px rgba(2,6,23,0.35);
+}
+.hero-sub {
+    margin-top:0.6rem;
+    color: rgba(255,255,255,0.85);
+    max-width: 54ch;
+    font-size: 1rem;
+}
+.cta-row{margin-top:1.1rem;display:flex;gap:0.9rem;align-items:center}
+.btn-primary {
+    background: linear-gradient(90deg,#4f46e5,#7c3aed);
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1.05rem;
+    border-radius: 10px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow: 0 10px 30px rgba(79,70,229,0.14);
+}
+.btn-secondary {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 0.6rem 0.95rem;
+    border-radius: 10px;
+    cursor:pointer;
+}
+
+/* hero-right - quick stats or illustration */
+.hero-right {
+    flex: 1 1 40%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.quick-card {
+    width:100%;
+    max-width:360px;
+    padding:1rem;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;
+    border: 1px solid rgba(255,255,255,0.04);
+    color:#fff;
+}
+.quick-card h3{margin:0;font-size:1.05rem}
+.quick-card p{margin:0.6rem 0 0;color:rgba(255,255,255,0.8);font-size:0.95rem}
+
+/* feature grid */
+.features {
+    margin-top:1.5rem;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:1rem;
+}
+.feature {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.12);
+    text-decoration:none;color:#0b1220;
+    display:flex;flex-direction:column;gap:0.5rem;
+    transition: transform .16s ease, box-shadow .16s ease;
+}
+.feature:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px rgba(2,6,23,0.12); }
+.feature .f-title{font-weight:700}
+.feature .f-desc{color:#475569;font-size:0.95rem}
+
+/* small screens */
+@media (max-width:880px){
+    .hero {flex-direction:column; padding:1rem;}
+    .hero-left, .hero-right {flex: none; width:100%}
+    .features {grid-template-columns: repeat(2, 1fr)}
+}
+@media (max-width:560px){
+    .features {grid-template-columns: 1fr}
+    .brand-title{display:none}
+}
+
+/* overlay que aparece atrás do menu e bloqueia interações com o resto da página */
+.menu-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(2,6,23,0.35);
+    z-index:240; /* overlay abaixo do menu (menu z-index:300) */
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .14s ease, visibility .14s;
+    pointer-events:none;
+}
+.menu-overlay.visible{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+/* quando o menu estiver aberto evita scroll de fundo */
+body.menu-open{
+    overflow: hidden;
 }

@@ -1,13 +1,214 @@
 {{ define "login" }}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- use absolute path to avoid relative path issues -->
+    <link rel="stylesheet" href="/static/css/login/login.css">
+    <title>Entrar — Sys Bookstore</title>
 </head>
 <body>
-    <h1>Pagina de login</h1>
+    <main class="login-page">
+        <section class="login-card">
+            <div class="brand">
+                <div class="brand-top">
+                    <h1>Sys Bookstore</h1>
+                    <button type="button" id="themeToggle" class="theme-toggle" role="switch" aria-checked="false" aria-label="Alternar tema" title="Alternar tema">
+                        <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-label">Claro</span>
+                    </button>
+                </div>
+                <p class="tagline">Gerencie sua biblioteca</p>
+            </div>
+
+            <div class="auth-wrap">
+                <div class="auth-panel">
+                    <div class="auth-tabs" role="tablist" aria-label="Entrar ou Criar conta">
+                        <button type="button" class="tab-btn active" data-target="loginPanel" role="tab" aria-selected="true">Entrar</button>
+                        <button type="button" class="tab-btn" data-target="signupPanel" role="tab" aria-selected="false">Criar conta</button>
+                    </div>
+
+                    <div class="forms">
+                        <!-- LOGIN -->
+                        <form id="loginPanel" class="form-panel visible" action="/login" method="POST" autocomplete="on" role="tabpanel" aria-hidden="false">
+                            <h2>Entrar</h2>
+
+                            <div class="field form-row">
+                                <label for="email">E‑mail</label>
+                                <input id="email" name="email" type="email" placeholder="seu@exemplo.com" required>
+                            </div>
+
+                            <div class="field form-row">
+                                <label for="password">Senha</label>
+                                <input id="password" name="password" type="password" placeholder="••••••••" required minlength="6">
+                            </div>
+
+                            <div class="actions">
+                                <label class="checkbox"><input type="checkbox" name="remember"> Lembrar-me</label>
+                                <button type="submit" class="btn-primary">Entrar</button>
+                            </div>
+
+                            <p class="help small-help"><a href="/recuperar-senha">Esqueci a senha</a></p>
+                        </form>
+
+                        <!-- SIGNUP -->
+                        <form id="signupPanel" class="form-panel hidden" action="/home/cadastro-usuario" method="POST" autocomplete="on" role="tabpanel" aria-hidden="true">
+                            <h2>Criar conta</h2>
+
+                            <div class="field form-row">
+                                <label for="name">Nome completo</label>
+                                <input id="name" name="name" type="text" placeholder="Seu nome completo" required>
+                                <div class="error" id="nameError">Informe seu nome completo.</div>
+                            </div>
+
+                            <div class="field form-row">
+                                <label for="age">Idade</label>
+                                <input id="age" name="age" type="number" min="13" placeholder="Ex: 30" inputmode="numeric" required>
+                                <div class="error" id="ageError">Informe uma idade válida (≥ 13).</div>
+                            </div>
+
+                            <div class="field form-row">
+                                <label for="cpf">CPF (apenas números)</label>
+                                <input id="cpf" name="cpf" type="text" inputmode="numeric" pattern="\d{11}" maxlength="14" placeholder="Ex: 12345678909" required>
+                                <div class="error" id="cpfError">CPF inválido (11 dígitos).</div>
+                            </div>
+
+                            <div class="field form-row">
+                                <label for="signupEmail">E‑mail</label>
+                                <input id="signupEmail" name="email" type="email" placeholder="seu@exemplo.com" required>
+                                <div class="error" id="emailError">Informe um e‑mail válido.</div>
+                            </div>
+
+                            <div class="field form-row">
+                                <label for="recoveryEmail">E‑mail para recuperação</label>
+                                <input id="recoveryEmail" name="recoveryEmail" type="email" placeholder="recuperacao@exemplo.com" required>
+                                <div class="error" id="recoveryError">Informe um e‑mail para recuperação válido.</div>
+                            </div>
+
+                            <div class="field form-row">
+                                <label for="signupPassword">Senha</label>
+                                <input id="signupPassword" name="password" type="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+                            </div>
+
+                            <div class="field form-row">
+                                <label for="confirmPassword">Confirmar senha</label>
+                                <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Repita sua senha" required minlength="6">
+                                <div class="error" id="passError">As senhas não coincidem.</div>
+                            </div>
+
+                            <div class="actions">
+                                <button type="submit" class="btn-primary" id="createAccount" disabled>Criar conta</button>
+                                <button type="button" class="btn-ghost" id="backToLogin">Voltar</button>
+                            </div>
+
+                            <p class="help small-help">Ao criar uma conta, você concorda com os termos.</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="login-footer">
+        <p>© 2025 Sys Bookstore</p>
+    </footer>
+
+    <!-- JS inlined (moved back from /static/js/login/login.js) -->
+    <script>
+	(function(){
+	  /* Theme toggle (existing) */
+	  const toggle = document.getElementById('themeToggle');
+	  const label = toggle && toggle.querySelector('.toggle-label');
+	  const root = document.documentElement;
+	  const key = 'sysbookstore-theme';
+	  const dark = 'dark';
+	  function applyTheme(theme){
+		if(theme === dark) {
+		  root.setAttribute('data-theme', dark);
+		  if(toggle) toggle.setAttribute('aria-checked','true');
+		  if(label) label.textContent = 'Escuro';
+		} else {
+		  root.removeAttribute('data-theme');
+		  if(toggle) toggle.setAttribute('aria-checked','false');
+		  if(label) label.textContent = 'Claro';
+		}
+	  }
+	  try{
+		const stored = localStorage.getItem(key);
+		if(stored) applyTheme(stored);
+		else {
+		  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		  applyTheme(prefersDark ? dark : 'light');
+		}
+		if(toggle) toggle.addEventListener('click', function(){
+		  const cur = root.getAttribute('data-theme') === dark ? 'light' : dark;
+		  applyTheme(cur);
+		  localStorage.setItem(key, cur);
+		});
+		if(toggle) toggle.addEventListener('keydown', function(e){
+		  if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); toggle.click(); }
+		});
+	  }catch(e){/* localStorage may be unavailable */}
+
+	  /* Auth tabs & form interactions */
+	  const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+	  const panels = Array.from(document.querySelectorAll('.form-panel'));
+
+	  function showPanel(id){
+		panels.forEach(p=>{
+		  const visible = p.id === id;
+		  p.classList.toggle('visible', visible);
+		  p.classList.toggle('hidden', !visible);
+		  p.setAttribute('aria-hidden', String(!visible));
+		});
+		tabs.forEach(t=>{
+		  const active = t.dataset.target === id;
+		  t.classList.toggle('active', active);
+		  t.setAttribute('aria-selected', String(active));
+		});
+		// focus first input in visible panel
+		const panel = document.getElementById(id);
+		if(panel){const first = panel.querySelector('input'); if(first) first.focus();}
+		try{ localStorage.setItem('sys-auth-panel', id); }catch(e){}
+	  }
+
+	  tabs.forEach(tb=>tb.addEventListener('click', ()=> showPanel(tb.dataset.target)));
+
+	  // Back to login button
+	  const backBtn = document.getElementById('backToLogin');
+	  if(backBtn) backBtn.addEventListener('click', ()=> showPanel('loginPanel'));
+
+	  // Restore last panel if available
+	  try{
+		const last = localStorage.getItem('sys-auth-panel');
+		if(last) showPanel(last);
+	  }catch(e){}
+
+	  // Signup: password match validation
+	  const signupPassword = document.getElementById('signupPassword');
+	  const confirmPassword = document.getElementById('confirmPassword');
+	  const passError = document.getElementById('passError');
+	  const createBtn = document.getElementById('createAccount');
+	  function validatePasswords(){
+		if(!signupPassword || !confirmPassword) return true;
+		const ok = signupPassword.value && confirmPassword.value && signupPassword.value === confirmPassword.value && signupPassword.value.length >= 6;
+		if(!ok){ passError.classList.add('visible'); if(createBtn) createBtn.disabled = true; }
+		else { passError.classList.remove('visible'); if(createBtn) createBtn.disabled = false; }
+		return ok;
+	  }
+	  if(signupPassword && confirmPassword){
+		signupPassword.addEventListener('input', validatePasswords);
+		confirmPassword.addEventListener('input', validatePasswords);
+		// run once
+		validatePasswords();
+	  }
+
+	  // Nice subtle enter animation on load
+	  document.documentElement.classList.add('js-ready');
+
+	})();
+    </script>
 </body>
 </html>
 

@@ -1,6 +1,6 @@
 {{define "home"}}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,12 +10,182 @@
 </head>
 <body>
 
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <img src="/static/images/icone.png" alt="Sys Bookstore" class="logo" />
+                <span class="brand-title">Sys Bookstore</span>
+            </div>
+            <div class="menu-wrap">
+                <button id="menuToggle" class="hamburger" aria-expanded="false" aria-controls="siteMenu" aria-label="Abrir menu">
+                    <span class="hamburger-box" aria-hidden="true">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+                <nav id="siteMenu" class="site-menu" role="menu" aria-hidden="true">
+                    <a role="menuitem" href="/home/cadastro-livro/">Cadastro de livros</a>
+                    <a role="menuitem" href="/home/estoque/" title="Consultar o estoque em formato de tabela">Consultar o estoque — em formato de tabela</a>
+                    <a role="menuitem" href="/home/emprestimos/">Emprestimos</a>
+                    <a role="menuitem" href="/home/bloqueados/" title="Usuário é bloqueado quando passar 30 dias sem devolução">Usuários bloqueados</a>
+                    <a role="menuitem" href="/home/multas/">Usuários com multas</a>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-    <h1>Gerenciador de Biblioteca</h1>
+    <main class="container">
+        <section class="hero" role="region" aria-label="Apresentação">
+            <div class="hero-left">
+                <h1 class="hero-title">Sys Bookstore — Gerencie sua biblioteca com simplicidade</h1>
+                <p class="hero-sub">Cadastre livros, acompanhe o estoque em tabela, gerencie empréstimos, multas e usuários bloqueados — tudo em uma interface leve e acessível.</p>
+                <div class="cta-row">
+                    <button class="btn-primary" onclick="location.href='/home/cadastro-livro/'">Ir ao Gerenciador</button>
+                    <button class="btn-secondary" onclick="location.href='/home/estoque/'">Ver Estoque</button>
+                </div>
+            </div>
 
-    <br>
-    <button onclick="window.location.href='/home/cadastro-livro/'" style="font-size: 25px; background-color: #038bbb; border-radius: 20px;">Ir para o Gerenciador</button>
+            <aside class="hero-right" aria-hidden="false">
+                <div class="quick-card" role="status" aria-live="polite">
+                    <h3>Visão rápida</h3>
+                    <p>Cadastre livros, consulte o estoque em tabela e gerencie empréstimos. Usuários ficam bloqueados após 30 dias de atraso — acompanhe multas por livro.</p>
+                </div>
+            </aside>
+        </section>
 
+        <section class="features" aria-label="Ações rápidas">
+            <a class="feature" href="/home/cadastro-livro/">
+                <div class="f-title">Cadastro de livros</div>
+                <div class="f-desc">Adicione livros com capa, sinopse e configuração de multa.</div>
+            </a>
+            <a class="feature" href="/home/estoque/">
+                <div class="f-title">Consultar o estoque</div>
+                <div class="f-desc">Visualize o estoque em formato de tabela e filtre por disponibilidade.</div>
+            </a>
+            <a class="feature" href="/home/emprestimos/">
+                <div class="f-title">Empréstimos</div>
+                <div class="f-desc">Controle empréstimos, prazos e devoluções.</div>
+            </a>
+            <a class="feature" href="/home/bloqueados/">
+                <div class="f-title">Usuários bloqueados</div>
+                <div class="f-desc">Usuários são bloqueados após 30 dias sem devolver — veja status e datas de liberação.</div>
+            </a>
+            <a class="feature" href="/home/multas/">
+                <div class="f-title">Usuários com multas</div>
+                <div class="f-desc">Liste e gerencie multas por usuário e por livro.</div>
+            </a>
+            <a class="feature" href="/">
+                <div class="f-title">Sair</div>
+                <div class="f-desc">Voltar à tela de login.</div>
+            </a>
+        </section>
+    </main>
+
+    <script>
+    (function(){
+      const btn = document.getElementById('menuToggle');
+      const menu = document.getElementById('siteMenu');
+      if(!btn || !menu) return;
+
+      const menuItems = Array.from(menu.querySelectorAll('a'));
+
+      // cria overlay se não existir (captura cliques fora e bloqueia fundo)
+      let overlay = document.querySelector('.menu-overlay');
+      if(!overlay){
+        overlay = document.createElement('div');
+        overlay.className = 'menu-overlay';
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(overlay);
+      }
+
+      function setOpen(open){
+        btn.setAttribute('aria-expanded', String(open));
+        menu.setAttribute('aria-hidden', String(!open));
+        overlay.classList.toggle('visible', open);
+        overlay.setAttribute('aria-hidden', String(!open));
+        document.body.classList.toggle('menu-open', open);
+        // visual handled by CSS transitions
+        if(open){
+          // move focus to first menu item for keyboard users
+          const first = menuItems[0];
+          if(first) first.focus();
+        } else {
+          // return focus to toggle
+          btn.focus();
+        }
+      }
+
+      // prevent click from bubbling (avoids immediate document click closing)
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        setOpen(!open);
+      });
+
+      // clicks on overlay close menu
+      overlay.addEventListener('click', function(){
+        setOpen(false);
+      });
+
+      // clicking inside the menu must not bubble to document (keeps it open)
+      menu.addEventListener('click', function(e){
+        e.stopPropagation();
+      });
+
+      // close on Escape
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') setOpen(false);
+      });
+
+      // Navigation with Up/Down keys when menu focused and Tab trapping
+      menu.addEventListener('keydown', function(e){
+        const active = document.activeElement;
+        const idx = menuItems.indexOf(active);
+
+        if(e.key === 'ArrowDown'){
+          e.preventDefault();
+          const next = menuItems[(idx + 1 + menuItems.length) % menuItems.length];
+          if(next) next.focus();
+        } else if(e.key === 'ArrowUp'){
+          e.preventDefault();
+          const prev = menuItems[(idx - 1 + menuItems.length) % menuItems.length];
+          if(prev) prev.focus();
+        } else if(e.key === 'Tab'){
+          // trap focus inside menu (cycle forward/backward).
+          // handle when no item is focused (idx == -1)
+          e.preventDefault();
+          if(e.shiftKey){
+            if(idx === -1){
+              // go to last
+              const last = menuItems[menuItems.length - 1];
+              if(last) last.focus();
+            } else {
+              const prev = menuItems[(idx - 1 + menuItems.length) % menuItems.length];
+              if(prev) prev.focus();
+            }
+          } else {
+            if(idx === -1){
+              // go to first
+              const first = menuItems[0];
+              if(first) first.focus();
+            } else {
+              const next = menuItems[(idx + 1) % menuItems.length];
+              if(next) next.focus();
+            }
+          }
+        }
+      });
+
+      // fallback: clicks on document (if any) close the menu
+      document.addEventListener('click', function(e){
+        if(!menu.contains(e.target) && !btn.contains(e.target) && !overlay.contains(e.target)){
+          setOpen(false);
+        }
+      });
+
+      // clicking a menu link closes the menu
+      menuItems.forEach(a=> a.addEventListener('click', ()=> setOpen(false)));
+    })();
+    </script>
 
 </body>
 </html>
